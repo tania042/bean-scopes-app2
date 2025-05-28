@@ -10,11 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoController {
 
     private Chef myChef;
+    private Chef secondChef;
 
-    
+   // constructor injection
     @Autowired
-    public DemoController(@Qualifier("frenchChef") Chef theChef) {
-        myChef = theChef;
+    public DemoController(@Qualifier("frenchChef") Chef theChef,
+                          @Qualifier("frenchChef") Chef theSecondChef) {
+        System.out.println("In constructor: " + getClass().getSimpleName());
+        myChef     = theChef;
+        secondChef = theSecondChef;
     }
 
     @GetMapping("/dailyrecipe")
@@ -22,4 +26,8 @@ public class DemoController {
         return myChef.getDailyRecipe();
     }
 
+    @GetMapping("/check")
+    public String check() {
+        return "Comparing beans: myChef == secondChef, " + (myChef == secondChef);
+    }
 }
